@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +27,7 @@ public class CustomerRestController {
 		return customerService.getCustomers();
 	}
 	
-	//add mapping for Det /customers/{customerId}
+	//add mapping for Get /customers/{customerId}
 	
 	@GetMapping("/customers/{customerId}")
 	public Customer getCustomer(@PathVariable int customerId) {
@@ -39,5 +41,15 @@ public class CustomerRestController {
 		return theCustomer;
 	}
 	
+	// add mapping for POST /customers - add new customer
+	
+	@PostMapping("/customers")
+	public  Customer addCustomer(@RequestBody Customer theCustomer) {
+		
+		theCustomer.setId(0); // if id is 0, then DAO will "INSERT" new customer
+		customerService.saveCustomer(theCustomer);
+		
+		return theCustomer;
+	}
 
 }
